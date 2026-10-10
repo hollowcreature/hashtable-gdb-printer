@@ -118,7 +118,7 @@ void table_free(struct table *t) {
         struct node *curr = t->buckets[idx];
         while (curr != NULL) {
             struct node *next = curr->next;
-            free(curr->key);
+            // free(curr->key);
             free(curr);
             curr = next;
         }
