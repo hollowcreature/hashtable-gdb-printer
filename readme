@@ -1,0 +1,25 @@
+BEFORE:
+
+(gdb) print *t
+$1 = {size = 8, count = 6, buckets = 0x5555555596d0}
+
+(gdb) p *t->buckets@8
+$1 = {0x0, 0x0, 0x0, 0x555555559760, 0x555555559860, 0x5555555597e0, 0x0, 0x0}
+
+(gdb) p *t->buckets[3]->next
+$2 = {key = 0x555555559740 "abrams", value = 67, next = 0x0}
+
+AFTER:
+
+(gdb) p *t
+$1 = table(count=6, size=8) = {[baba] = 1, [abrams] = 67, [solomon] = 5, [paradox] = 4, [dynamo] = 3, [drifter] = 2}
+
+(gdb) dump-table t
+bucket 0: (empty)
+bucket 1: (empty)
+bucket 2: (empty)
+bucket 3, length: 2, list: baba=1 -> abrams=67
+bucket 4, length: 2, list: solomon=5 -> paradox=4
+bucket 5, length: 2, list: dynamo=3 -> drifter=2
+bucket 6: (empty)
+bucket 7: (empty)
