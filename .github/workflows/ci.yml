@@ -1,0 +1,15 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install tools
+        run: sudo apt-get update && sudo apt-get install -y gdb valgrind
+      - name: Build
+        run: make
+      - name: Leak check
+        run: valgrind --leak-check=full --error-exitcode=1 ./main
+      - name: GDB printer test
+        run: make test
