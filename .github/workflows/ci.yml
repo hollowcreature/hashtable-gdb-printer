@@ -10,6 +10,6 @@ jobs:
       - name: Build
         run: make
       - name: Leak check
-        run: valgrind --leak-check=full --error-exitcode=1 ./main
+        run: make memcheck
       - name: GDB printer test
         run: make test

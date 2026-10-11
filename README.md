@@ -23,7 +23,7 @@ With `printer.py` loaded:
 
 ```gdb
 (gdb) p *t
-$1 = table(count=6, size=8) = {[baba] = 1, [abrams] = 67, [solomon] = 5, [paradox] = 4, [dynamo] = 3, [drifter] = 2}
+$1 = table(count=6, size=8) = {["baba"] = 1, ["abrams"] = 67, ["solomon"] = 5, ["paradox"] = 4, ["dynamo"] = 3, ["drifter"] = 2}
 
 (gdb) dump-table t
 bucket 0: (empty)
@@ -42,7 +42,8 @@ bucket 7: (empty)
 - **`printer.py`**:
   - `TablePrinter`: a pretty-printer for `struct table` using the `map` display hint
   - `dump-table`: a GDB command that shows the bucket layout and chain lengths
-- **`test.gdb`** + **`expected.txt`**: a batch GDB script whose output is diffed against an expected result.
+  - `hashtable-max-size`: a GDB setting (default 1,000,000) that bounds what the printer trusts. Tables larger than this are reported as invalid
+- **`test.gdb`** + **`expected.txt`**: a batch GDB script whose output is diffed against an expected result, once on a populated table and once after all keys are removed
 
 ## Build and run
 
@@ -50,8 +51,8 @@ Requires Linux or WSL with `gcc`, `make`, `gdb` and `valgrind`
 
 ```sh
 make
+make memcheck
 ./main
-valgrind --leak-check=full ./main
 ```
 
 ## Using the printer
@@ -65,8 +66,22 @@ gdb ./main
 (gdb) dump-table t
 ```
 
+## Robustness
+
+The printer validates the table before walking it, so inspecting a half-built or corrupted table won't hang GDB or crash the printer.
+Lowering the cap shows the check in action:
+
+```gdb
+(gdb) set hashtable-max-size 4
+(gdb) p *t
+$1 = table(invalid: size=8, count=6)
+```
+
+- sizes above `hashtable-max-size` are treated as garbage (`set hashtable-max-size N` to adjust)
+- chain walks are capped by `count`, so a cycle in a chain can't loop forever
+
 ## Tests and CI
 
 `make test` runs `test.gdb` in batch mode, keeps only the printer and `dump-table` output, and diffs it against `expected.txt`.
 
-GitHub Actions runs on every push: build, valgrind with `--error-exitcode=1`, then `make test`.
+GitHub Actions runs on every push: build, `make memcheck`, then `make test`.

@@ -208,6 +208,12 @@ int main(void) {
 
     printf("---------------------------------\n");
 
+    printf("remove every remaining key test\n");
+    table_remove(t, "solomon");
+    table_remove(t, "paradox");
+    table_remove(t, "drifter");
+    printf("count after (should now be 0): %zu\n", t->count);
+
     printf("tests over\n");
     table_free(t);
     return 0;

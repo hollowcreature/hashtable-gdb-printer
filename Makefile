@@ -11,4 +11,7 @@ test: main
 	gdb -batch -nx -x test.gdb ./main 2>&1 | grep -E '^(\$$[0-9]+ = |bucket )' > actual.txt
 	diff expected.txt actual.txt
 
-.PHONY: clean test
+memcheck: main
+	valgrind --leak-check=full --error-exitcode=1 ./main
+
+.PHONY: clean test memcheck

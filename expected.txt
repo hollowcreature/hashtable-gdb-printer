@@ -1,9 +1,18 @@
-$1 = table(count=6, size=8) = {[baba] = 1, [abrams] = 67, [solomon] = 5, [paradox] = 4, [dynamo] = 3, [drifter] = 2}
+$1 = table(count=6, size=8) = {["baba"] = 1, ["abrams"] = 67, ["solomon"] = 5, ["paradox"] = 4, ["dynamo"] = 3, ["drifter"] = 2}
 bucket 0: (empty)
 bucket 1: (empty)
 bucket 2: (empty)
 bucket 3, length: 2, list: baba=1 -> abrams=67
 bucket 4, length: 2, list: solomon=5 -> paradox=4
 bucket 5, length: 2, list: dynamo=3 -> drifter=2
+bucket 6: (empty)
+bucket 7: (empty)
+$2 = table(count=0, size=8)
+bucket 0: (empty)
+bucket 1: (empty)
+bucket 2: (empty)
+bucket 3: (empty)
+bucket 4: (empty)
+bucket 5: (empty)
 bucket 6: (empty)
 bucket 7: (empty)
