@@ -43,7 +43,7 @@ class TablePrinter:
 
         if not is_table_sane(self.val):
             return f"table(invalid: size={size}, count={count})"
-    
+
         return f"table(count={count}, size={size})"
 
     def children(self):

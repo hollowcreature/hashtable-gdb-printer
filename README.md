@@ -52,6 +52,7 @@ Requires Linux or WSL with `gcc`, `make`, `gdb` and `valgrind`
 ```sh
 make
 make memcheck
+make test
 ./main
 ```
 
